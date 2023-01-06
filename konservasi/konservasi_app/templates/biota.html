@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<br>
+<h3 style="font-family: Open-sans; text-align: center;">BIOTA LAUT</h3>
+
+  <div class="container"><br>
+
+  <table class="table table-bordered nomor" style="font-family: Open-sans;">
+    <thead>
+      <tr style="text-align: center;">
+        <th>No.</th>
+        <th class="col-2">Nama Biota</th>
+        <th>Foto</th>
+        <th class="col-5">Deskripsi</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for hewan in jenis %}
+        <td style="text-align: center;"></td>
+        <td style="text-align: center;">{{ hewan.nama_biota }}</td>
+        <td style="text-align: center;">{% if hewan.gambar %}
+          <img style="height: 200px;" src="{{ hewan.gambar.url }}" alt="">
+          {% endif %}</td>
+        <td style="text-align: center;">{{ hewan.deskripsi }}</td>
+        <td style="text-align: center;">
+          <a class="btn btn-info" href="{% url 'edit_biota' hewan.pk %}">Edit</a>
+          <a class="btn btn-danger"  href="#" role="button" onclick="hapusbuku('{{ hewan.pk }}', '{{ hewan.nama_biota }}')">Hapus</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function hapusbuku(id, nama) {
+    swal({
+      title: "Apakah Anda Yakin?",
+      text: "Setelah data " + nama + " dihapus, data tidak dapat dikembalhewan!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Berhasil!", "Data " + nama + " Berhasil Dihapus!", "success").then(function () {
+            window.location = "/biota/delete_biota/" + id;
+          });
+        }
+      });
+  }
+</script>
+
+{% endblock %}
